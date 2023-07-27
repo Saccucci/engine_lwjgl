@@ -68,6 +68,6 @@ IF "%1"=="build" (
 )
 
 REM Se nenhum argumento válido foi passado, mostra uma mensagem de ajuda
-echo Uso: %0 [justRun|clean|build|rb] [terminal|log]
+echo Uso: %0 [justRun|clean|build|run] [terminal|log]
 echo Exemplo: %0 rb terminal
 exit /b

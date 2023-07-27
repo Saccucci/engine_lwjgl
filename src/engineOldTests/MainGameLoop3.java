@@ -7,7 +7,7 @@ import renderEngine.Loader;
 import renderEngine.RawModel;
 import renderEngine.Renderer;
 
-public class MainGameLoop {
+public class MainGameLoop3 {
 
 
 	/**

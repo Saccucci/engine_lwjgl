@@ -1,1 +1,0 @@
-javac -d bin -cp lib/jars/lwjgl.jar;lib/jars/lwjgl_util.jar;lib/jars/slick-util.jar src/engineTester/MainGameLoop.java src/renderEngine/DisplayManager.java 
