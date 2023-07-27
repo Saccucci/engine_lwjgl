@@ -28,6 +28,12 @@ Descrição. #link
 **5 - COLORINDO COM SHADERS:**
 Descrição. #link
 
+**6 - TEXTURIZAÇÃO:**
+Descrição. #link
+
+**7 - MATRIX E VARIÁVEIS UNIFORMS:**
+Descrição. #link
+
 <!-- ===================================== -->
 
 **N - Tópico:**

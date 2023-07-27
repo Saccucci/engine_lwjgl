@@ -1,24 +1,23 @@
-#version 400 core
+#version 400 core // Versão do shader sendo utilizada
 
-// Declara a entrada "position" do tipo vec3 (vetor de três componentes)
-in vec3 position;
+in vec3 position; // Define um atributo de entrada "position" que representa a posição do vértice em 3D.
 
-// Declara a entrada "textureCoords" do tipo vec2 (vetor de duas componentes)
-in vec2 textureCoords;
+in vec2 textureCoords; // Define um atributo de entrada "textureCoords" que representa as coordenadas de textura do vértice em 2D.
 
-// Declara a saída "pass_textureCoords" do tipo vec2 (vetor de duas componentes)
-// Essa variável será passada para o próximo estágio do pipeline gráfico (fragment shader)
-out vec2 pass_textureCoords;
+out vec2 pass_textureCoords; // Define uma variável de saída "pass_textureCoords" que irá conter as coordenadas de textura para serem passadas ao próximo estágio do pipeline gráfico.
 
-// Função principal do shader
-void main(void) {
+uniform mat4 transformationMatrix; // Define uma matriz de transformação uniforme que será utilizada para transformar a posição do vértice.
 
-    // Atribui à variável pré-definida "gl_Position" a posição do vértice após a transformação do espaço do objeto para o espaço de recorte (clip space).
-    // Isso é necessário para que a GPU saiba onde posicionar os vértices na janela de exibição.
-    gl_Position = vec4(position, 1.0);
+void main(void) { // Função principal do shader
 
-    // Atribui à variável "pass_textureCoords" as coordenadas de textura "textureCoords".
-    // Essas coordenadas de textura serão interpoladas para cada fragmento do triângulo durante o processo de rasterização.
-    // Essa variável será passada para o fragment shader para que possamos mapear texturas no modelo 3D.
-    pass_textureCoords = textureCoords;
+    gl_Position = transformationMatrix * vec4(position, 1.0); // Calcula a posição final do vértice multiplicando a posição original pelo "transformationMatrix" e armazena em "gl_Position". A quarta componente 1.0 é para transformação homogênea.
+
+    pass_textureCoords = textureCoords; // Copia as coordenadas de textura do vértice para a variável de saída "pass_textureCoords" para que sejam passadas ao próximo estágio do pipeline gráfico.
 }
+
+/*
+Este código é um shader de vértices (vertex shader) escrito na linguagem GLSL (OpenGL Shading Language). 
+Ele recebe como entrada as coordenadas 3D dos vértices ("position") e as coordenadas 2D de textura ("textureCoords") de cada vértice de um objeto 3D. 
+Em seguida, aplica uma matriz de transformação ("transformationMatrix") para transformar a posição do vértice. 
+As coordenadas de textura são então copiadas para uma variável de saída para serem utilizadas em estágios posteriores do pipeline gráfico.
+*/

@@ -3,9 +3,13 @@ package shaders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 public abstract class ShaderProgram {
 	
@@ -15,6 +19,7 @@ public abstract class ShaderProgram {
 	private int vertexShaderID;
 	//ID do shader de fragmentos.
 	private int fragmentShaderID;
+	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
 	//O construtor recebe os nomes de arquivos dos shaders de vértices e fragmentos como parâmetros.
 	public ShaderProgram(String vertexFile,String fragmentFile){
@@ -53,12 +58,23 @@ public abstract class ShaderProgram {
 		/** Realiza a linkagem do programa de shader.
 		* Usa a função GL20.glLinkProgram() para vincular os shaders e criar um executável do programa. 
 		*/
+		
 		GL20.glLinkProgram(programID);
 		/** Valida o programa de shader.
 		 * Usa a função GL20.glValidateProgram() para validar o programa, 
 		 * arantindo que todos os shaders estejam corretamente vinculados. 
 		*/
 		GL20.glValidateProgram(programID);
+		getAllUniformLocation();
+	}
+
+	// O método getAllUniformLocation é declarado como abstrato e deve ser implementado nas subclasses.
+	// Ele é responsável por obter todas as localizações das variáveis uniformes no shader.
+	protected abstract void getAllUniformLocation();
+
+	// O método getUniformLocation é usado para obter a localização (ID) de uma variável uniforme no shader pelo seu nome.
+	protected int getUniformLocation (String uniformName) {
+		return GL20.glGetUniformLocation(programID, uniformName);
 	}
 	
 	public void start(){
@@ -92,7 +108,49 @@ public abstract class ShaderProgram {
 	 * Por exemplo, associar as posições dos vértices do modelo ao atributo "in_Position" no shader de vértices.
 	 */
 	protected abstract void bindAttributes();
-	
+
+	// Função para carregar um valor de tipo float para uma variável uniforme no shader.
+	// Parâmetros:
+	//   - location: O endereço da variável uniforme no shader onde o valor float será carregado.
+	//   - value: O valor float que será carregado na variável uniforme.
+	protected void loadFloat(int location, float value) {
+		GL20.glUniform1f(location, value);
+	}
+
+	// Função para carregar um vetor de tipo Vector3f (provavelmente uma classe que representa um vetor 3D)
+	// para uma variável uniforme no shader.
+	// Parâmetros:
+	//   - location: O endereço da variável uniforme no shader onde os valores do vetor serão carregados.
+	//   - vector: O objeto Vector3f contendo os valores x, y e z do vetor a ser carregado.
+	protected void loadVector(int location, Vector3f vector) {
+		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+
+	// Função para carregar um valor booleano (true ou false) para uma variável uniforme no shader.
+	// Os shaders geralmente trabalham com valores float, então um valor booleano é convertido para 0 (false) ou 1 (true).
+	// Parâmetros:
+	//   - location: O endereço da variável uniforme no shader onde o valor booleano será carregado.
+	//   - value: O valor booleano a ser carregado (true ou false).
+	protected void loadBoolean(int location, boolean value) {
+		float toLoad = 0;
+		if (value) {
+			toLoad = 1;
+		}
+		GL20.glUniform1f(location, toLoad);
+	}
+
+	// Função para carregar uma matriz 4x4 (Matrix4f) para uma variável uniforme no shader.
+	// Parâmetros:
+	//   - location: O endereço da variável uniforme no shader onde a matriz será carregada.
+	//   - matrix: O objeto Matrix4f contendo os elementos da matriz 4x4 a ser carregada.
+	protected void loadMatrix(int location, Matrix4f matrix) {
+		// Armazena a matriz no buffer para enviá-la ao shader.
+		matrix.store(matrixBuffer);
+		// Prepara o buffer para ser lido, definindo a posição para o início do buffer e a limitação para o fim dos dados.
+		matrixBuffer.flip();
+		// Envia a matriz (buffer) para a variável uniforme no shader.
+		GL20.glUniformMatrix4(location, false, matrixBuffer);
+	}
 
 	protected void bindAttribute(int attribute, String variableName){
 		/**
@@ -102,6 +160,7 @@ public abstract class ShaderProgram {
 		GL20.glBindAttribLocation(programID, attribute, variableName);
 	}
 	
+	// O método loadShader é uma função auxiliar para carregar e compilar um shader a partir de um arquivo.
 	private static int loadShader(String file, int type){
 		// Cria um objeto StringBuilder chamado shaderSource. O StringBuilder será usado para armazenar o código-fonte do shader lido do arquivo.
 		StringBuilder shaderSource = new StringBuilder();
