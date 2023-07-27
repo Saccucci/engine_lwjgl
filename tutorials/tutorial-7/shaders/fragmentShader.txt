@@ -1,0 +1,19 @@
+#version 400 core
+// Define a versão do shader e o perfil a ser usado.
+
+in vec2 pass_textureCoords;
+// Declara uma variável de entrada chamada pass_textureCoords do tipo vec2 (vetor de duas componentes), que representa as coordenadas de textura do fragmento.
+
+out vec4 out_Color;
+// Declara uma variável de saída chamada out_Color do tipo vec4 (vetor de quatro componentes), que será passada para o próximo estágio do pipeline gráfico (o framebuffer) e representa a cor final do fragmento após o processamento desse shader.
+
+uniform sampler2D textureSampler;
+// Declara um uniforme chamado textureSampler, que representa uma textura de amostragem 2D. Uniformes são variáveis que são definidas fora do shader e têm o mesmo valor para todos os fragmentos processados.
+
+void main(void) {
+    // Começa a definição do corpo da função principal do shader.
+
+    out_Color = texture(textureSampler, pass_textureCoords);
+    // Atribui à variável out_Color a cor do fragmento resultante da amostragem da textura no local de coordenadas pass_textureCoords. A função texture() realiza a amostragem da textura 2D usando as coordenadas normalizadas passadas como segundo argumento e retorna a cor correspondente.
+
+}
