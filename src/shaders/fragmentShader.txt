@@ -1,0 +1,27 @@
+// Esse código é um shader em GLSL (OpenGL Shading Language) que será executado na GPU durante o processo de renderização.
+// Declara a versão do shader e o perfil a ser usado. Neste caso, é a versão 4.00 do OpenGL core profile.
+#version 400 core
+
+// Declara uma variável de entrada chamada colour do tipo vec3 (vetor de três componentes), que representa a cor do vértice ou
+// fragmento passada pelo estágio anterior do pipeline gráfico (normalmente, o vertex shader).
+in vec3 colour;
+
+// Declara uma variável de saída chamada out_Color do tipo vec4 (vetor de quatro componentes), que será passada para o próximo estágio do pipeline gráfico
+// (como o framebuffer) e representa a cor do vértice ou fragmento após o processamento desse shader.
+out vec4 out_Color;
+
+void main(void){
+
+	// Atribui à variável out_Color um valor que representa a cor do vértice ou fragmento após o processamento do shader.
+	// Neste caso, a cor do vértice é simplesmente copiada para a variável de saída out_Color. A função vec4() cria um vetor de quatro componentes (RGBA)
+	// a partir do vetor colour, que é um vetor de três componentes (RGB), e o componente alpha (transparência) é definido como 1.0,
+	// o que significa que a cor não é transparente.
+	out_Color = vec4(colour,1.0);
+
+}
+
+/*
+	Em resumo, esse shader simplesmente copia a cor do vértice de entrada para a variável de saída out_Color, 
+	que será usada para determinar a cor final do vértice ou fragmento após o processamento de todos os estágios do pipeline gráfico. 
+	A saída deste shader será a cor do vértice inalterada, que será usada para preencher os fragmentos correspondentes na tela.
+*/

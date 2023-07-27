@@ -1,0 +1,29 @@
+// Esse código é um shader em GLSL (OpenGL Shading Language) que será executado na GPU durante o processo de renderização.
+// Declara a versão do shader e o perfil a ser usado. Neste caso, é a versão 4.00 do OpenGL core profile.
+#version 400 core
+
+// Declara uma variável de entrada chamada position do tipo vec3 (vetor de três componentes), 
+// que representa a posição de cada vértice do modelo que será processado pelo shader.
+in vec3 position;
+
+// Declara uma variável de saída chamada colour do tipo vec3 (vetor de três componentes), 
+// que será passada para o próximo estágio do pipeline gráfico (como o fragment shader) e pode ser usada para atribuir uma cor a cada fragmento do modelo.
+out vec3 colour;
+
+void main(void){
+
+	// Atribui à variável pré-definida gl_Position (vetor de quatro componentes) a posição do vértice após a transformação do espaço do objeto
+	// para o espaço de recorte (clip space). Isso é necessário para que a GPU saiba onde posicionar os vértices na janela de exibição.
+	gl_Position = vec4(position,1.0);
+
+	// Atribui à variável colour uma cor com base nos valores das coordenadas x e y da posição do vértice,
+	// e também define o componente y da cor como 1.0 (valor máximo), o que resulta em uma tonalidade mais brilhante.
+	// As coordenadas x e y da posição são usadas para determinar a cor vermelha e azul do vértice, enquanto o componente verde é fixo em 1.0.
+	colour = vec3(position.x+0.5,1.0,position.y+0.5);
+}
+
+/*
+	Em resumo, esse shader toma as coordenadas x e y do vértice e usa esses valores para atribuir uma cor ao vértice antes de renderizá-lo na tela. 
+	A cor resultante é uma mistura de vermelho e azul, com uma tonalidade mais brilhante de verde. 
+	O vértice é então transformado para o espaço de recorte e passado para o próximo estágio do pipeline gráfico para o processamento adicional.
+*/

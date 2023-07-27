@@ -8,7 +8,7 @@ import renderEngine.RawModel;
 import renderEngine.Renderer;
 import shaders.StaticShader;
 
-public class MainGameLoop {
+public class MainGameLoop5 {
 
 
 	/**

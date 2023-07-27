@@ -6,9 +6,8 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.RawModel;
 import renderEngine.Renderer;
-import shaders.StaticShader;
 
-public class MainGameLoop {
+public class MainGameLoop3 {
 
 
 	/**
@@ -21,7 +20,6 @@ public class MainGameLoop {
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
 		Renderer renderer = new Renderer();
-		StaticShader shader = new StaticShader(); // instancia o shader
 		
 		// Define um array vertices que contém as coordenadas dos vértices de dois triângulos que juntos formam um quadrilátero.
 		float[] vertices = {
@@ -45,18 +43,10 @@ public class MainGameLoop {
 		while (!Display.isCloseRequested()) {
 			// game logic
 			renderer.prepare();
-			// Ativa a renderização com uso do shader
-			shader.start();
 			renderer.render(model);
-			// Finaliza o uso do shader. Esse método faz com que o shader seja desativado, preparando a GPU para a renderização 
-			// de outros objetos sem o uso desse shader específico.
-			shader.stop();
-			DisplayManager.updateDisplay();	
+			DisplayManager.updateDisplay();
 		}
 
-		// Limpa os recursos alocados para o shader. Esse método desaloca buffers, 
-		// texturas ou outros recursos de GPU associados ao shader, liberando memória.
-		shader.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 	}

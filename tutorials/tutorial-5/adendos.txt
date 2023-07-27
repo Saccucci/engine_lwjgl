@@ -1,0 +1,1 @@
+Lembrar de alterar o `game.bat` para conseguir efetuar a leitura dos arquivos `src/shaders/*.java`
