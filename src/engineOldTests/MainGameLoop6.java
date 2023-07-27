@@ -10,7 +10,7 @@ import renderEngine.Renderer;
 import shaders.StaticShader;
 import textures.ModelTexture;
 
-public class MainGameLoop {
+public class MainGameLoop6 {
 
 	/**
 	 * Carrega os dados de posição para dois triângulos (que juntos formam um quadrilátero)

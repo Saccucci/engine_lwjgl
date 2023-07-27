@@ -28,10 +28,7 @@ public class DisplayManager {
 	public static void createDisplay() {
 		// Versão que desejamos usar do OpenGL
 		// Versao(principalVersão,versãoSecundária).compativelComVersõesFuturas().UtilizarAsFuncionalidadesMaisModernasNãoSuportaObsoletos()
-		ContextAttribs attribs = new ContextAttribs(3, 2)
-		.withForwardCompatible(true)
-		.withProfileCore(true);
-		
+		ContextAttribs attribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
 		try {
 			// Local onde a Janela Inicia
 			Display.setLocation(0, 0); 
