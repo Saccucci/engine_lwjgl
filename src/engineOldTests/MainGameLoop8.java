@@ -13,7 +13,7 @@ import textures.ModelTexture;
 import entities.Camera;
 import entities.Entity;
 
-public class MainGameLoop {
+public class MainGameLoop8 {
 
 	public static void main(String[] args) {
 	
