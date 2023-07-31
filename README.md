@@ -40,6 +40,9 @@ Descrição. #link
 **9 - EXPLICAÇÃO DE ARQUIVOS .OBJ:**
 Descrição. #link
 
+**10 - CARREGANDO MODELOS 3D:**
+Descrição. #link
+
 <!-- ===================================== -->
 
 **N - Tópico:**
