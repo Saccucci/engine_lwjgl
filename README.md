@@ -37,6 +37,9 @@ Descrição. #link
 **8 - MODELO, VISUALIZAÇÃO E MATRIZES DE PROJEÇÃO:**
 Descrição. #link
 
+**9 - EXPLICAÇÃO DE ARQUIVOS .OBJ:**
+Descrição. #link
+
 <!-- ===================================== -->
 
 **N - Tópico:**

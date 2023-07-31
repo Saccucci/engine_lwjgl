@@ -1,0 +1,2 @@
+Este tutorial tem como Objetivo explicar o funcionamento de um arquivo .obj,
+visando o entendimento para inserção de modelos neste formato na engine
