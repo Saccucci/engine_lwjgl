@@ -16,7 +16,7 @@ import renderEngine.Renderer;
 import shaders.StaticShader;
 import textures.ModelTexture;
 
-public class MainGameLoop {
+public class MainGameLoop12 {
 
     public static void main(String[] args) {
 

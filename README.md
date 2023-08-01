@@ -46,6 +46,9 @@ Descrição. #link
 **11 - ILUMINAÇÃO POR PIXEL:**
 Descrição. #link
 
+**12 - ILUMINAÇÃO ESPECULAR (BRILHO E REFLETIVIDADE):**
+Descrição. #link
+
 <!-- ===================================== -->
 
 **N - Tópico:**
