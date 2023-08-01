@@ -25,8 +25,8 @@ public class Loader {
     private List<Integer> vbos = new ArrayList<Integer>();
     private List<Integer> textures = new ArrayList<Integer>();
 
-    // Carrega um modelo 3D para um Vertex Array Object (VAO) e retorna um objeto RawModel que contém o ID do VAO criado e o número de índices no modelo.
-    public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices) {
+   // Carrega um modelo 3D para um Vertex Array Object (VAO) e retorna um objeto RawModel que contém o ID do VAO criado e o número de índices no modelo.
+    public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
         // Cria um novo VAO e retorna seu ID. O VAO será usado para armazenar dados geométricos do modelo 3D.
         int vaoID = createVAO();
         // Cria um index buffer e o associa ao VAO atual. O index buffer contém os índices que conectam os vértices para formar triângulos.
@@ -35,6 +35,8 @@ public class Loader {
         storeDataInAttributeList(0, 3, positions);
         // Armazena os dados de coordenadas de textura no atributo 1 do VAO. Os dados são armazenados em um VBO específico.
         storeDataInAttributeList(1, 2, textureCoords);
+        // Armazena os dados de vetores normais (usados em iluminação) no atributo 2 do VAO. Os dados são armazenados em um VBO específico.
+        storeDataInAttributeList(2, 3, normals);
         // Desfaz o vínculo com o VAO atual após terminar de armazenar os dados.
         unbindVAO();
         // Retorna um novo objeto RawModel, que contém o ID do VAO criado e o número de índices no modelo.

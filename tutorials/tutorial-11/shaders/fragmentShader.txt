@@ -1,0 +1,41 @@
+#version 150  // Versão da linguagem do GLSL utilizada.
+
+// Define o atributo "pass_textureCoordinates" como uma entrada para o shader (vetor de 2 componentes - coordenadas de textura).
+in vec2 pass_textureCoordinates;
+in vec3 surfaceNormal; // Define o atributo "surfaceNormal" como uma entrada para o shader (vetor de 3 componentes - normal da superfície).
+in vec3 toLightVector; // Define o atributo "toLightVector" como uma entrada para o shader (vetor de 3 componentes - direção da luz).
+
+// Define o atributo "out_Color" como uma saída para o shader (vetor de 4 componentes - vermelho, verde, azul, alpha).
+out vec4 out_Color;
+
+// Define o uniforme "modelTexture" como um sampler2D, que é um tipo especial para texturas 2D.
+uniform sampler2D modelTexture;
+
+// Define o uniforme "lightColour" como um vetor de 3 componentes, representando a cor da luz.
+uniform vec3 lightColour;
+
+void main(void) {  // Função principal do shader.
+
+    // Normaliza a normal da superfície para obter uma direção unitária.
+    vec3 unitNormal = normalize(surfaceNormal);
+
+    // Normaliza a direção da luz para obter uma direção unitária.
+    vec3 unitLightVector = normalize(toLightVector);
+
+    // Calcula o produto escalar entre a normal da superfície e a direção da luz.
+    // O resultado representa a intensidade da luz incidente na superfície.
+    float nDot1 = dot(unitNormal, unitLightVector);
+
+    // Calcula o brilho (intensidade) da luz incidente na superfície.
+    // A função "max" garante que a intensidade nunca seja negativa.
+    float brightness = max(nDot1, 0.0);
+
+    // Calcula a componente difusa da cor, que é o resultado da multiplicação da cor da luz (lightColour)
+    // pela intensidade da luz incidente na superfície (brightness).
+    vec3 diffuse = brightness * lightColour;
+
+    // Atribui à variável "out_Color" a cor da textura 2D amostrada nas coordenadas de textura recebidas como entrada.
+    // Isso significa que a cor do pixel a ser desenhado será a cor correspondente nas coordenadas de textura fornecidas.
+    // O valor final é multiplicado pela componente difusa calculada anteriormente.
+    out_Color = vec4(diffuse, 1.0) * texture(modelTexture, pass_textureCoordinates);
+}

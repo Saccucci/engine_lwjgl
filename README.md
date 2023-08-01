@@ -43,6 +43,9 @@ Descrição. #link
 **10 - CARREGANDO MODELOS 3D:**
 Descrição. #link
 
+**11 - ILUMINAÇÃO POR PIXEL:**
+Descrição. #link
+
 <!-- ===================================== -->
 
 **N - Tópico:**

@@ -1,0 +1,26 @@
+#version 150
+
+// Definição dos atributos de entrada
+in vec3 position;            // Atributo de posição do vértice (coordenadas x, y e z)
+in vec2 textureCoordinates;  // Atributo de coordenadas de textura do vértice (coordenadas u e v)
+
+// Definição das variáveis de saída
+out vec3 colour;             // Variável de saída para a cor do vértice
+out vec2 pass_textureCoordinates;  // Variável de saída para as coordenadas de textura
+
+// Definição das matrizes uniformes para transformação dos vértices
+uniform mat4 transformationMatrix;  // Matriz de transformação do objeto no espaço do modelo
+uniform mat4 projectionMatrix;      // Matriz de projeção do vértice no espaço da tela
+uniform mat4 viewMatrix;            // Matriz de visualização da câmera
+
+void main(void) {
+
+    // Transformação do vértice aplicando as matrizes de projeção, visualização e modelo
+    gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);
+    
+    // Passagem das coordenadas de textura para a próxima etapa do pipeline de renderização
+    pass_textureCoordinates = textureCoordinates;
+    
+    // Cálculo da cor do vértice com base nas coordenadas x e y do vértice
+    colour = vec3(position.x + 0.5, 0.0, position.y + 0.5);
+}

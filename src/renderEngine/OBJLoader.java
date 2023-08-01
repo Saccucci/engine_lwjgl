@@ -37,7 +37,7 @@ public class OBJLoader {
 
         // Arrays para armazenar os dados dos vértices, texturas e normais do modelo.
         float[] verticesArray = null;
-        float[] normalArray = null;
+        float[] normalsArray = null;
         float[] textureArray = null;
         int[] indicesArray = null;
 
@@ -63,7 +63,7 @@ public class OBJLoader {
                     // Quando encontra uma face (triângulo), inicializa os arrays para texturas e normais
                     // e interrompe o loop para começar a processar as faces.
                     textureArray = new float[vertices.size() * 2];
-                    normalArray = new float[vertices.size() * 3];
+                    normalsArray = new float[vertices.size() * 3];
                     break;
                 }
             }
@@ -82,9 +82,9 @@ public class OBJLoader {
 
                 // Processa cada vértice da face e adiciona seus índices aos arrays de índices,
                 // bem como atualiza os arrays de texturas e normais correspondentes.
-                processVertex(vertex1, indices, textures, normals, textureArray, normalArray);
-                processVertex(vertex2, indices, textures, normals, textureArray, normalArray);
-                processVertex(vertex3, indices, textures, normals, textureArray, normalArray);
+                processVertex(vertex1, indices, textures, normals, textureArray, normalsArray);
+                processVertex(vertex2, indices, textures, normals, textureArray, normalsArray);
+                processVertex(vertex3, indices, textures, normals, textureArray, normalsArray);
                 line = reader.readLine();
             }
 
@@ -112,8 +112,8 @@ public class OBJLoader {
             indicesArray[i] = indices.get(i);
         }
 
-        // Retorna o RawModel criado a partir dos arrays de vértices, texturas e índices.
-        return loader.loadToVAO(verticesArray, textureArray, indicesArray);
+        // Retorna o RawModel criado a partir dos arrays de vértices, texturas, normais e índices.
+        return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
     }
 
     // Função auxiliar para processar um vértice de uma face e atualizar as listas de texturas e normais.

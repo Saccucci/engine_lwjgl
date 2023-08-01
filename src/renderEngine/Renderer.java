@@ -45,6 +45,7 @@ public class Renderer {
 		GL30.glBindVertexArray(rawModel.getVaoID()); // Ativa o VAO (Vertex Array Object) do modelo
 		GL20.glEnableVertexAttribArray(0); // Ativa o atributo de posição do VAO (índice 0)
 		GL20.glEnableVertexAttribArray(1); // Ativa o atributo de coordenadas de textura do VAO (índice 1)
+		GL20.glEnableVertexAttribArray(2); // Ativa o atributo de coordenadas de textura do VAO (índice 2)
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(
 				entity.getPosition(), // Posição da entidade
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), // Rotação da entidade nos eixos X, Y e Z
@@ -56,6 +57,7 @@ public class Renderer {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0); // Renderiza o modelo
 		GL20.glDisableVertexAttribArray(0); // Desativa o atributo de posição do VAO (índice 0)
 		GL20.glDisableVertexAttribArray(1); // Desativa o atributo de coordenadas de textura do VAO (índice 1)
+		GL20.glDisableVertexAttribArray(2); // Desativa o atributo de coordenadas de textura do VAO (índice 2)
 		GL30.glBindVertexArray(0); // Desativa o VAO
 	}
 	
