@@ -1,0 +1,66 @@
+#version 150  // Versão da linguagem do GLSL utilizada.
+
+// Define o atributo "pass_textureCoordinates" como uma entrada para o shader (vetor de 2 componentes - coordenadas de textura).
+in vec2 pass_textureCoordinates;
+in vec3 surfaceNormal; // Define o atributo "surfaceNormal" como uma entrada para o shader (vetor de 3 componentes - normal da superfície).
+in vec3 toLightVector; // Define o atributo "toLightVector" como uma entrada para o shader (vetor de 3 componentes - direção da luz).
+in vec3 toCameraVector;
+
+// Define o atributo "out_Color" como uma saída para o shader (vetor de 4 componentes - vermelho, verde, azul, alpha).
+out vec4 out_Color;
+
+// Define o uniforme "modelTexture" como um sampler2D, que é um tipo especial para texturas 2D.
+uniform sampler2D modelTexture;
+
+// Define o uniforme "lightColour" como um vetor de 3 componentes, representando a cor da luz.
+uniform vec3 lightColour;
+
+// Define os uniformes "shineDamper" e "reflectivity" para controlar o brilho especular e a intensidade de reflexão, respectivamente.
+uniform float shineDamper;
+uniform float reflectivity;
+
+void main(void) {  // Função principal do shader.
+
+    // Normaliza a normal da superfície para obter uma direção unitária.
+    vec3 unitNormal = normalize(surfaceNormal);
+
+    // Normaliza a direção da luz para obter uma direção unitária.
+    vec3 unitLightVector = normalize(toLightVector);
+
+    // Calcula o produto escalar entre a normal da superfície e a direção da luz.
+    // O resultado representa a intensidade da luz incidente na superfície.
+    float nDot1 = dot(unitNormal, unitLightVector);
+
+    // Calcula o brilho (intensidade) da luz incidente na superfície.
+    // A função "max" garante que a intensidade nunca seja negativa. // iluminação mínima = num da direita
+    float brightness = max(nDot1, 0.2);
+
+    // Calcula a componente difusa da cor, que é o resultado da multiplicação da cor da luz (lightColour)
+    // pela intensidade da luz incidente na superfície (brightness).
+    vec3 diffuse = brightness * lightColour;
+
+    // Calcula a direção do vetor da câmera (olho do observador) em relação ao fragmento atual.
+    vec3 unitVectorToCamera = normalize(toCameraVector);
+
+    // Calcula a direção da luz refletida, ou seja, a direção em que a luz é refletida pela superfície.
+    // Isso é usado para calcular o brilho especular.
+    vec3 lightDirection = -unitLightVector;
+    vec3 reflectedLightDirection = reflect(lightDirection, unitNormal); 
+
+    // Calcula o fator especular através do produto escalar entre o vetor de reflexão da luz e o vetor da câmera.
+    // A função "max" garante que o fator especular nunca seja negativo.
+    float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
+    specularFactor = max(specularFactor, 0.0);
+
+    // Aplica a função de atenuação para criar um efeito suave de brilho especular.
+    float dampedFactor = pow(specularFactor, shineDamper);
+
+    // Calcula a componente especular final, multiplicando o fator de atenuação, a intensidade de reflexão e a cor da luz.
+    vec3 finalSpecular = dampedFactor * reflectivity * lightColour;
+
+    // Atribui à variável "out_Color" a cor da textura 2D amostrada nas coordenadas de textura recebidas como entrada.
+    // Isso significa que a cor do pixel a ser desenhado será a cor correspondente nas coordenadas de textura fornecidas.
+    // O valor final é multiplicado pela componente difusa calculada anteriormente e somado à componente especular.
+    out_Color = vec4(diffuse, 1.0) * texture(modelTexture, pass_textureCoordinates) + vec4(finalSpecular, 1.0);
+
+}

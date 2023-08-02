@@ -49,7 +49,7 @@ Descrição. #link
 **12 - ILUMINAÇÃO ESPECULAR (BRILHO E REFLETIVIDADE):**
 Descrição. #link
 
-**13 - OTIMIZAÇÃO:**
+**13 - OTIMIZAÇÃO E OCULTAÇÃO DE FACES:**
 Descrição. #link
 
 <!-- ===================================== -->
