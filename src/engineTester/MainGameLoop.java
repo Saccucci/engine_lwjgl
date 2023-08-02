@@ -1,5 +1,9 @@
 package engineTester;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -11,9 +15,8 @@ import models.RawModel;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
-import renderEngine.Renderer;
-import shaders.StaticShader;
 import textures.ModelTexture;
 
 public class MainGameLoop {
@@ -26,62 +29,58 @@ public class MainGameLoop {
         // Inicializa o loader, responsável por carregar os dados dos modelos e texturas
         Loader loader = new Loader();
 
-        // Inicializa o shader estático, que é responsável por renderizar os modelos na tela
-        StaticShader shader = new StaticShader();
-
-        // Inicializa o renderizador, que é responsável por renderizar os objetos na tela
-        Renderer renderer = new Renderer(shader);
-
         // Carrega os dados do modelo para o VAO (Vertex Array Object)
-        // responsável por ler e interpretar o arquivo ".obj" (neste caso stall.obj) contendo as informações do modelo 3D. 
+        // responsável por ler e interpretar o arquivo ".obj" contendo as informações do modelo 3D. 
         // O resultado é uma estrutura de dados RawModel que contém as informações do modelo.
-        RawModel model = OBJLoader.loadObjModel("dragon", loader);
+        RawModel model = OBJLoader.loadObjModel("Cube", loader);
 
         // Cria um modelo texturizado, que inclui o modelo e sua textura associada
-        TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("image2")));
-
-        // Obtém a textura associada ao modelo para definir o brilho (shineDamper) e a refletividade (reflectivity)
-        ModelTexture texture = staticModel.getTexture();
-        texture.setShineDamper(10); // Brilho
-        texture.setReflectivity(1); // Reflectividade
-
-        // Cria uma entidade, que é uma instância do modelo texturizado em uma posição específica do mundo
-        Entity entity = new Entity(staticModel, new Vector3f(0, -5, -50), 0, 0, 0, 1);
+        TexturedModel cubeModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("image2")));
 
         // Cria uma luz, que será usada para iluminar o modelo
-        Light light = new Light(new Vector3f(0, 0, -20), new Vector3f(1, 1, 1));
+        Light light = new Light(new Vector3f(3000, 2000, 3000), new Vector3f(1, 1, 1)); // posição e cor da Luz
 
         // Cria uma câmera, que representa a visão do jogador no mundo 3D
         Camera camera = new Camera();
 
+         // Cria uma lista para armazenar todas as entidades (cubos) do jogo
+        List<Entity> allCubes = new ArrayList<Entity>();
+        // Cria um objeto Random para gerar valores aleatórios
+        Random random = new Random();
+
+        // Gera 200 cubos com posições e rotações aleatórias e adiciona-os à lista de entidades
+        for(int i = 0; i < 200; i++){
+            float x = random.nextFloat() * 100 - 50;
+            float y = random.nextFloat() * 100 - 50;
+            float z = random.nextFloat() * -300;
+            allCubes.add(new Entity(cubeModel, new Vector3f(x, y, z), random.nextFloat() * 180f,
+            random.nextFloat() * 180f, 0f, 1f));
+        }
+
+        // Inicializa o renderizador mestre (MasterRenderer) responsável por renderizar as entidades na tela
+        MasterRenderer renderer = new MasterRenderer();
+
         // Loop principal do jogo, que executa até que a janela de exibição seja fechada
         while (!Display.isCloseRequested()) {
-            // Rotaciona a entidade
-            entity.increaseRotation(0, 1, 0);
             // Move a câmera
             camera.move();
+            
+            for(Entity cube : allCubes){
+                // Rotaciona a entidade
+                cube.increaseRotation(0, 1, 0);
+                
+                renderer.processEntity(cube);
+            }
 
-            // Prepara o renderizador para a próxima renderização
-            renderer.prepare();
-
-            // Inicia o shader estático para renderizar o modelo
-            shader.start();
-
-            // Carrega a luz no shader para iluminar o modelo
-            shader.loadLight(light);
-            // Carrega a matriz de visão da câmera no shader
-            shader.loadViewMatrix(camera);
-            // Renderiza a entidade
-            renderer.render(entity, shader);
-            // Para o shader após renderização
-            shader.stop();
+            // Renderiza todas as entidades no mundo, considerando a posição da luz e a câmera atual
+            renderer.render(light, camera);
 
             // Atualiza a janela de exibição
             DisplayManager.updateDisplay();
         }
 
-        // Limpa o shader após o término do loop principal
-        shader.cleanUp();
+        // Limpa o renderizador mestre após o término do loop principal
+        renderer.cleanUp();
         // Limpa o loader após o término do loop principal
         loader.cleanUp();
         // Fecha a janela de exibição após o término do loop principal

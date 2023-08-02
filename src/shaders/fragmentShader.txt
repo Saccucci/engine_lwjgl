@@ -32,8 +32,8 @@ void main(void) {  // Função principal do shader.
     float nDot1 = dot(unitNormal, unitLightVector);
 
     // Calcula o brilho (intensidade) da luz incidente na superfície.
-    // A função "max" garante que a intensidade nunca seja negativa.
-    float brightness = max(nDot1, 0.0);
+    // A função "max" garante que a intensidade nunca seja negativa. // iluminação mínima = num da direita
+    float brightness = max(nDot1, 0.2);
 
     // Calcula a componente difusa da cor, que é o resultado da multiplicação da cor da luz (lightColour)
     // pela intensidade da luz incidente na superfície (brightness).

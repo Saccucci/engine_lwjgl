@@ -49,6 +49,9 @@ Descrição. #link
 **12 - ILUMINAÇÃO ESPECULAR (BRILHO E REFLETIVIDADE):**
 Descrição. #link
 
+**13 - OTIMIZAÇÃO:**
+Descrição. #link
+
 <!-- ===================================== -->
 
 **N - Tópico:**
