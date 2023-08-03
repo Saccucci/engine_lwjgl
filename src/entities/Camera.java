@@ -7,10 +7,11 @@ import org.lwjgl.util.vector.Vector3f;
 public class Camera {
 	
 	// Declaração dos atributos da câmera
-	private Vector3f position = new Vector3f(0,0,0); // Vetor que armazena a posição da câmera no espaço 3D
+	private Vector3f position = new Vector3f(0,5,0); // Vetor que armazena a posição da câmera no espaço 3D
 	private float pitch; // Angulação em torno do eixo x (inclinção da câmera para cima ou para baixo)
 	private float yaw;   // Angulação em torno do eixo y (rotação da câmera para a esquerda ou para a direita)
 	private float roll;  // Angulação em torno do eixo z (inclinação lateral da câmera)
+	private float speedCam = 1f;
 
 	// Construtor padrão da classe Camera
 	public Camera(){}
@@ -19,19 +20,27 @@ public class Camera {
 	public void move(){
 		// Verifica se a tecla W está pressionada
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-			position.z -= 0.2f; // Move a câmera para trás no eixo z (diminui a posição no eixo z)
+			position.z -= speedCam; // Move a câmera para trás no eixo z (diminui a posição no eixo z)
 		}
 		// Verifica se a tecla S está pressionada
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-			position.z += 0.2f; // Move a câmera para frente no eixo z (aumenta a posição no eixo z)
+			position.z += speedCam; // Move a câmera para frente no eixo z (aumenta a posição no eixo z)
 		}
 		// Verifica se a tecla D está pressionada
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-			position.x += 0.2f; // Move a câmera para a direita no eixo x (aumenta a posição no eixo x)
+			position.x += speedCam; // Move a câmera para a direita no eixo x (aumenta a posição no eixo x)
 		}
 		// Verifica se a tecla A está pressionada
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			position.x -= 0.2f; // Move a câmera para a esquerda no eixo x (diminui a posição no eixo x)
+			position.x -= speedCam; // Move a câmera para a esquerda no eixo x (diminui a posição no eixo x)
+		}
+		// Verifica se a tecla E está pressionada
+		if(Keyboard.isKeyDown(Keyboard.KEY_E)){
+			position.y += speedCam; // Move a câmera para cima no eixo y (aumenta a posição no eixo y)
+		}
+		// Verifica se a tecla A está pressionada
+		if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
+			position.y -= speedCam; // Move a câmera para baixo no eixo y (diminui a posição no eixo y)
 		}
 	}
 
@@ -53,5 +62,10 @@ public class Camera {
 	// Método para obter a inclinação lateral da câmera (roll)
 	public float getRoll() {
 		return roll;
+	}
+
+	// Método para setar a rotação da câmera (yaw)
+	public void setYaw(float yaw) {
+		this.yaw = yaw;
 	}
 }

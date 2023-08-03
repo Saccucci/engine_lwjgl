@@ -57,11 +57,11 @@ REM Target "build": Compila os arquivos
 IF "%1"=="build" (
     IF "%LOG_OPTION%"=="terminal" (
         echo Compilando arquivos...
-        javac -d bin -cp lib/jars/lwjgl.jar;lib/jars/lwjgl_util.jar;lib/jars/slick-util.jar src/engineTester/MainGameLoop.java src/renderEngine/*.java src/shaders/*.java src/textures/*.java src/models/*.java src/toolBox/*.java src/entities/*.java
+        javac -d bin -cp lib/jars/lwjgl.jar;lib/jars/lwjgl_util.jar;lib/jars/slick-util.jar src/engineTester/MainGameLoop.java src/renderEngine/*.java src/shaders/*.java src/textures/*.java src/models/*.java src/toolBox/*.java src/entities/*.java src/terrains/*.java
         echo Compilação concluída.
     ) ELSE (
         echo Compilando arquivos... >> %LOG_FILE%
-        javac -d bin -cp lib/jars/lwjgl.jar;lib/jars/lwjgl_util.jar;lib/jars/slick-util.jar src/engineTester/MainGameLoop.java src/renderEngine/*.java src/shaders/*.java src/textures/*.java src/models/*.java src/toolBox/*.java src/entities/*.java>> %LOG_FILE% 2>&1
+        javac -d bin -cp lib/jars/lwjgl.jar;lib/jars/lwjgl_util.jar;lib/jars/slick-util.jar src/engineTester/MainGameLoop.java src/renderEngine/*.java src/shaders/*.java src/textures/*.java src/models/*.java src/toolBox/*.java src/entities/*.java src/terrains/*.java>> %LOG_FILE% 2>&1
         echo Compilação concluída. >> %LOG_FILE%
     )
     exit /b

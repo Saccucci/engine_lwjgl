@@ -3,7 +3,6 @@ package renderEngine;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -17,33 +16,16 @@ import shaders.StaticShader;
 import textures.ModelTexture;
 import toolbox.Maths;
 
-public class Renderer {
+public class EntityRenderer {
 
-	private static final float FOV = 70;
-	private static final float NEAR_PLANE = 0.1f;
-	private static final float FAR_PLANE = 1000;
-
-	private Matrix4f projectionMatrix;
 	private StaticShader shader;
 
 	// Construtor da classe Renderer
-	public Renderer(StaticShader shader) {
+	public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
 		this.shader = shader;
-		// ativa o culling/ocultação de faces
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		// este comando esconde as faces // o Padrão é (GL11.GL_BACK) para esconder as faces traseiras/ocultas porém (GL_FRONT) foi o parametro que funcionou para esta finalidade
-		GL11.glCullFace(GL11.GL_FRONT);
-		createProjectionMatrix(); // Chama o método para criar a matriz de projeção
 		shader.start(); // Inicia o shader
 		shader.loadProjectionMatrix(projectionMatrix); // Carrega a matriz de projeção para o shader
 		shader.stop(); // Para o shader
-	}
-
-	// Prepara a tela para renderização
-	public void prepare() {
-		GL11.glEnable(GL11.GL_DEPTH_TEST); // Ativa o teste de profundidade
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Limpa o buffer de cores e de profundidade
-		GL11.glClearColor(0.4f, 0.2f, 0.2f, 1); // Define a cor de fundo da tela (verde escuro)
 	}
 
 	// Método para renderizar uma lista de entidades associadas a modelos texturizados
@@ -98,21 +80,5 @@ public class Renderer {
 				entity.getScale() // Escala da entidade
 		);
 		shader.loadTransformationMatrix(transformationMatrix); // Carrega a matriz de transformação para o shader
-	}
-
-	// Cria a matriz de projeção
-	private void createProjectionMatrix() {
-		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight(); // Calcula a proporção de aspecto
-		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio); // Calcula a escala no eixo Y
-		float x_scale = y_scale / aspectRatio; // Calcula a escala no eixo X
-		float frustum_length = FAR_PLANE - NEAR_PLANE; // Calcula o comprimento do frustum
-
-		projectionMatrix = new Matrix4f(); // Cria uma nova matriz 4x4 (matriz de projeção)
-		projectionMatrix.m00 = x_scale; // Define o valor de escala no eixo X
-		projectionMatrix.m11 = y_scale; // Define o valor de escala no eixo Y
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length); // Define a componente (2,2) da matriz
-		projectionMatrix.m23 = -1; // Define a componente (2,3) da matriz
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length); // Define a componente (3,2) da matriz
-		projectionMatrix.m33 = 0; // Define a componente (3,3) da matriz
 	}
 }
